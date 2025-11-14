@@ -1,5 +1,3 @@
 # Changelog
 
-## Unreleased
-- fix: makefile versioning
-- init: git init
+## Changes since v2.0.0
