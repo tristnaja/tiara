@@ -53,16 +53,25 @@ int main(int argc, char *argv[]) {
 
   // tiara init <project>
   if (strcmp(argv[1], "init") == 0) {
-    if (argc != 3) {
-      printf("Usage: tiara init <project_name>\n");
-      return 1;
-    }
-
     system("clear");
-    printf("Initializing project...\n");
+    printf("Initializing FastAPI project...\n");
+    fflush(stdout);
     sleep(1);
 
-    if (init_project(argv[2]) != 0) {
+    printf("Getting current working directory...\n");
+    fflush(stdout);
+    sleep(1);
+
+    char cwd[512];
+    getcwd(cwd, sizeof(cwd));
+
+    char *last = strrchr(cwd, '/');
+
+    printf("%s\n", cwd);
+    fflush(stdout);
+    sleep(1);
+
+    if (init_project(last) != 0) {
       perror("Cannot initialize project");
       return 1;
     }

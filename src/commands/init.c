@@ -10,12 +10,6 @@
 #include <unistd.h>
 
 int init_project(char *project_name) {
-  if (project_name == NULL) {
-    printf("Project Name is not provided.\n The Usage is: tiara new "
-           "<project_name>\n");
-    return 1;
-  }
-
   printf("Initializing the project...\n");
   fflush(stdout);
   sleep(1);
@@ -23,8 +17,6 @@ int init_project(char *project_name) {
   const char *template_dir = "template/normal/";
 
   if (copy_dir(template_dir, project_name) == 0) {
-
-    chdir(project_name);
 
     if (start_venv() != 0) {
       perror("could not start the venv");

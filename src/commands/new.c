@@ -22,7 +22,10 @@ int new_project(char *project_name) {
     sleep(1);
 
     const char *template_dir = "template/normal/";
-    copy_dir(template_dir, project_name);
+    if (copy_dir(template_dir, project_name) != 0) {
+      perror("Failed");
+      return 1;
+    }
 
     chdir(project_name);
 

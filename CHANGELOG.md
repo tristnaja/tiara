@@ -1,10 +1,4 @@
 # Changelog
 
-## Changes since v2.1.0
-
-### ✨ Features
-
-### 🐛 Fixes
-
-### ♻️ Refactoring
+## Changes since v3.0.0
 
