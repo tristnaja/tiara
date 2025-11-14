@@ -1,5 +1,5 @@
-#include "../utils/utils.h"
-#include "headers/clear_screen.h"
+#include "utils/utils.h"
+#include "components/clear_screen.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>

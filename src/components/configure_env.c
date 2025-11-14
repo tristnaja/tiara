@@ -1,5 +1,5 @@
-#include "headers/configure_env.h"
-#include "../utils/utils.h"
+#include "components/configure_env.h"
+#include "utils/utils.h"
 #include <stdio.h>
 #include <unistd.h>
 

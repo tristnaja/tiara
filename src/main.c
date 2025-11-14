@@ -1,5 +1,5 @@
-#include "commands/headers/init.h"
-#include "commands/headers/new.h"
+#include "commands/init.h"
+#include "commands/new.h"
 
 #include <stdio.h>
 #include <stdlib.h>

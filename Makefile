@@ -10,24 +10,28 @@ endif
 
 VERSION     := $(shell cat $(VERSION_FILE))
 
+# ---------- Directories ----------
+SRCDIR      := src
+INCDIR      := include
+OBJDIR      := obj
+BINDIR_PROJ := bin
+
 # ---------- Compiler ----------
 CC          := gcc
-CFLAGS      := -Wall -Wextra -O2 -DVERSION=\"$(VERSION)\"
+CFLAGS      := -Wall -Wextra -O2 -DVERSION=\"$(VERSION)\" -I$(INCDIR)
 LDFLAGS     :=
 
-# list source files (edit if you add/remove)
-SRC := tiara.c \
-       utils/utils.c \
-       commands/new.c \
-       commands/init.c \
-       components/start_pip.c \
-       components/clear_screen.c \
-       components/start_git.c \
-       components/configure_env.c \
-       components/start_virtual_env.c
+# list source files
+SRC := $(wildcard $(SRCDIR)/*.c) \
+       $(wildcard $(SRCDIR)/utils/*.c) \
+       $(wildcard $(SRCDIR)/commands/*.c) \
+       $(wildcard $(SRCDIR)/components/*.c)
 
-# object files (incremental build)
-OBJS := $(patsubst %.c,%.o,$(SRC))
+# object files (incremental build in OBJDIR)
+OBJS := $(patsubst $(SRCDIR)/%.c,$(OBJDIR)/%.o,$(SRC))
+
+# final binary
+TARGET := $(BINDIR_PROJ)/$(NAME)
 
 # ---------- Install ----------
 PREFIX ?= $(HOME)/.local
@@ -47,35 +51,37 @@ RESET := \033[0m
 .PHONY: all clean install uninstall help bump patch minor major release changelog rebuild
 
 # ---------- Default ----------
-all: $(NAME)
+all: $(TARGET)
 
-# link final binary (incremental: compile .o then link)
-$(NAME): $(OBJS)
+# link final binary
+$(TARGET): $(OBJS)
+	@mkdir -p $(@D)
 	@printf "$(BLUE)🔧 Linking $(NAME) v$(VERSION)...$(RESET)\n"
 	$(CC) $(LDFLAGS) -o $@ $^
-	@printf "$(GREEN)✅ Built: ./$@ (version: %s)$(RESET)\n" "$(VERSION)"
+	@printf "$(GREEN)✅ Built: $@ (version: %s)$(RESET)\n" "$(VERSION)"
 
 # ---------- Compile rule ----------
-# compile each .c → .o (placed next to sources)
-%.o: %.c
+# compile each .c → .o (placed in OBJDIR)
+$(OBJDIR)/%.o: $(SRCDIR)/%.c
+	@mkdir -p $(@D)
 	@printf "📦 Compiling $<...\n"
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 # ---------- Clean ----------
 clean:
 	@printf "$(YELLOW)🧹 Cleaning build artifacts...$(RESET)\n"
-	-rm -f $(OBJS) $(NAME)
+	-rm -rf $(OBJDIR) $(BINDIR_PROJ)
 	@printf "$(GREEN)✔ Cleaned.$(RESET)\n"
 
 # ---------- Install / Uninstall ----------
-install: $(NAME)
+install: $(TARGET)
 	@mkdir -p "$(BINDIR)"
 	@dest="$(BINDIR)/$(NAME)"; \
 	if [ -f "$$dest" ]; then \
 	  printf "♻️  Replacing existing $$dest\n"; \
 	  rm -f "$$dest"; \
 	fi; \
-	cp "$(NAME)" "$$dest" && chmod 755 "$$dest"; \
+	cp "$(TARGET)" "$$dest" && chmod 755 "$$dest"; \
 	printf "$(GREEN)🚀 Installed to $$dest$(RESET)\n"
 
 uninstall:
@@ -171,7 +177,7 @@ release: changelog all
 	# attach GitHub release if gh exists
 	if [ -n "$(GH)" ]; then \
 	  printf "$(BLUE)📦 Creating GitHub release v$(VERSION) (using gh)...$(RESET)\n"; \
-	  gh release create "v$(VERSION)" $(NAME) --notes-file CHANGELOG.md || { printf "$(YELLOW)⚠️  gh release failed or already exists$(RESET)\n"; }; \
+	  gh release create "v$(VERSION)" $(TARGET) --notes-file CHANGELOG.md || { printf "$(YELLOW)⚠️  gh release failed or already exists$(RESET)\n"; }; \
 	else \
 	  printf "$(YELLOW)ℹ️  'gh' CLI not found; skipping GitHub release. Install gh to auto-upload release assets.$(RESET)\n"; \
 	fi
