@@ -1,6 +1,6 @@
-#include "components/start_pip.h"
-#include "utils/utils.h"
-#include "components/clear_screen.h"
+#include "../../include/components/start_pip.h"
+#include "../../include/components/clear_screen.h"
+#include "../../include/utils/utils.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
