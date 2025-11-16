@@ -1,9 +1,9 @@
-#include "commands/new.h"
-#include "components/configure_env.h"
-#include "components/start_git.h"
-#include "components/start_pip.h"
-#include "components/start_venv.h"
-#include "utils/utils.h"
+#include "../../include/commands/new.h"
+#include "../../include/components/configure_env.h"
+#include "../../include/components/start_git.h"
+#include "../../include/components/start_pip.h"
+#include "../../include/components/start_venv.h"
+#include "../../include/utils/utils.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/stat.h>

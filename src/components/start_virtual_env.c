@@ -1,5 +1,5 @@
-#include "utils/utils.h"
-#include "components/start_venv.h"
+#include "../../include/components/start_venv.h"
+#include "../../include/utils/utils.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
